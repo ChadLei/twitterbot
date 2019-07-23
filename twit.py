@@ -11,9 +11,10 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 user = api.me()
-count = 0
+
 
 def main():
+	count = 0
 	# search = ("like", "retweet", "win", "giveaway", "rt to win", "chance to win")
 	search = ("like and retweet OR like and rt OR retweet to win OR c OR rt to win OR chance to win OR giving away -filter:retweets")
 	numOfTweets = 100
@@ -29,21 +30,23 @@ def main():
 				print(retweet_text)
 			else:
 				tweetText = tweet.full_text
-				print(tweetText + '\n')
-				if 'like' in tweetText or 'Like' in tweetText or 'LIKE' in tweetText:
-					tweet.favorite()
-					print("Liked")
-				if 'retweet' in tweetText or 'Retweet' in tweetText or 'RETWEET' in tweetText or 'rt' in tweetText or 'RT' in tweetText:
-					tweet.retweet()
-					print("Retweeted")
-					time.sleep(50)
-				count = count + 1
-				print(count)
-				# api.create_friendship(tweet.user.id)
+				wackWords = ['follow', 'Follow', 'FOLLOW', 'comment', 'Comment', 'COMMENT', 'tag', 'Tag', 'TAG', 'survey']
+				if  any(word not in tweetText for word in wackWords):
+					print(tweetText + '\n')
+					if 'like' in tweetText or 'Like' in tweetText or 'LIKE' in tweetText:
+						tweet.favorite()
+						print("[Liked]")
+					if 'retweet' in tweetText or 'Retweet' in tweetText or 'RETWEET' in tweetText or 'rt' in tweetText or 'RT' in tweetText:
+						tweet.retweet()
+						print("[Retweeted]")
+					count += 1
+					print("Number of tweets gona through: " + str(count) + '\n')
+					time.sleep(120)
+					# api.create_friendship(tweet.user.id)
 		except tweepy.TweepError as e:
 			# print(e.reason)
 			print("[I have already liked/retweeted, so moving on....]")
-			time.sleep(10)
+			time.sleep(60)
 			continue
 		except StopIteration:
 			break
