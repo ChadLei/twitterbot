@@ -27,7 +27,7 @@ def main():
 		try:
 			print("[USERNAME: " + tweet.user.screen_name + "]")
 			tweetText = tweet.full_text
-			wackWords = ['follow', 'comment', 'tag', 'survey', 'fill out']
+			wackWords = ['follow', 'comment', 'survey', 'fill out']
 			# print(tweetText)
 			if  all(word not in tweetText.lower() for word in wackWords):
 				print(tweetText.lower())
