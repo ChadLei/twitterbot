@@ -19,9 +19,9 @@ api = tweepy.API(auth, wait_on_rate_limit=True,wait_on_rate_limit_notify=True) #
 
 def main():
 	count = 0
-	# search = ("obama")
 	# search = ("like", "retweet", "win", "giveaway", "rt to win", "chance to win")
 	search = ("#rttowin OR #giveaway OR giveaway OR like and retweet OR like and rt OR retweet to enter OR retweet to win OR c OR rt to win OR chance to win OR giving away OR win free OR win a free OR chance to win -filter:retweets")
+	# search = ("tag")
 	numOfTweets = 1000 #Maximum number of tweets we want to collect 
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
 		try:
@@ -38,7 +38,9 @@ def main():
 					tweet.retweet()
 					print("[Retweeted]")
 				if 'tag' in tweetText.lower():
-					api.update_status('@officialchidori the first of course!!', in_reply_to_status_id=tweet.id)
+					userID = tweet.user.screen_name
+					comment = "@%s @officialchidori dude check that out lol!!" % (userID)
+					api.update_status(comment, tweet.id)
 					print("[Tagged]")
 				count += 1
 				print("[Number of tweets gone through: " + str(count) + ']\n')
