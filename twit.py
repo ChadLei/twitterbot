@@ -47,14 +47,13 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 					print("[Retweeted]")
 				if 'tag ' in tweetText.lower() or 'tell us' in tweetText.lower():
 					userID = tweet.user.screen_name
-					comment = "@%s @officialchidori @ChadLe14 @chadeezy1 dude check that out lol!! the first one obviously :)" % (userID)
+					comment = "@%s @officialchidori @chazeechazy @ChadLe14 @chadeezy1 dude check that out lol!! the first one obviously :)" % (userID)
 					api.update_status(comment, tweet.id)
 					print("[Tagged]")
 				tweetCount += 1
 				print("[Number of tweets " + name + " has gone through: " + str(tweetCount) + ']\n')
 				time.sleep(100)
 				# api.create_friendship(tweet.user.id)
-			
 		except tweepy.TweepError as e:
 			print(e.reason + '\n')
 			# print("[This has already been liked/retweeted, so moving on....]\n")
@@ -63,6 +62,9 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 		except StopIteration:
 			print("[I have stopped for some reason....]")
 			break
+		except UnicodeEncodeError:
+			print("[(tweetText.lower() couldn't convert tweet....]")
+			continue
 	# print(api.rate_limit_status()['resources']['search']) #You can check how many queries you have left using rate_limit_status() method
 	print("[Complete!]")
 
