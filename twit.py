@@ -71,30 +71,15 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 # main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret)
 # main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret)
 
-p1 = Process(target=main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret))
-p1.start()
-p2 = Process(target=main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret))
-p2.start()
-p1.join()
-p2.join()
+if __name__ == '__main__':
+	p1 = Process(target=main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret))
+	p1.start()
+	p2 = Process(target=main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret))
+	p2.start()
+	p1.join()
+	p2.join()
 
-playsound('drake.mp3')
-
-# def func1():
-#     for i in range(1,9):
-#     	print(i)
-
-# def func2():
-#     for i in range(10,20):
-#     	print(i)
-
-
-# p1 = Process(target=func1)
-# p1.start()
-# p2 = Process(target=func2)
-# p2.start()
-# p1.join()
-# p2.join()
+	playsound('drake.mp3')
 
 
 
