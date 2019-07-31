@@ -31,33 +31,32 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 	search = ("win free OR #rttowin OR #giveaway OR giveaway OR like and retweet OR like and rt OR retweet to enter OR retweet to win OR c OR rt to win OR chance to win OR giving away OR win free OR win a free OR chance to win -filter:retweets")
 	# search = ("tag")
 	numOfTweets = 1000 #Maximum number of tweets we want to collect 
+	
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
 		try:
 			print("[USERNAME: " + tweet.user.screen_name + "]")
 			tweetText = tweet.full_text
 			wackWords = ['follow', 'comment', 'survey', 'fill out', 'reply', 'rsvp', 'enter here', 'click to', 'dm ']
-			# print(tweetText)
 			if  all(word not in tweetText.lower() for word in wackWords):
 				print(tweetText.lower())
 				if 'like' in tweetText.lower():
 					tweet.favorite()
-					print("[Liked]")
+					print("---- [Liked] ----")
 				if 'retweet' in tweetText.lower() or 'rt' in tweetText.lower():
 					tweet.retweet()
-					print("[Retweeted]")
+					print("---- [Retweeted] ----")
 				if 'tag ' in tweetText.lower() or 'tell us' in tweetText.lower():
 					userID = tweet.user.screen_name
 					comment = "@%s @officialchidori @chazeechazy @ChadLe14 @chadeezy1 dude check that out lol!! the first one obviously :)" % (userID)
 					api.update_status(comment, tweet.id)
-					print("[Tagged]")
+					print("---- [Tagged] ----")
 				tweetCount += 1
 				print("[Number of tweets " + name + " has gone through: " + str(tweetCount) + ']\n')
 				time.sleep(100)
 				# api.create_friendship(tweet.user.id)
 		except tweepy.TweepError as e:
-			print(e.reason + '\n')
-			# print("[This has already been liked/retweeted, so moving on....]\n")
-			# time.sleep(60)
+			print('---- Error: '+ str(e[0][0]['message']) + ' ----\n')
+			break
 			continue
 		except StopIteration:
 			print("[I have stopped for some reason....]")
@@ -66,7 +65,7 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 			print("[(tweetText.lower() couldn't convert tweet....]")
 			continue
 	# print(api.rate_limit_status()['resources']['search']) #You can check how many queries you have left using rate_limit_status() method
-	print("[Complete!]")
+	print("**************** Complete! ****************\n")
 
 # main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret)
 # main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret)
