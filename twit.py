@@ -50,13 +50,16 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 					comment = "@%s @officialchidori @chazeechazy @ChadLe14 @chadeezy1 dude check that out lol!! the first one obviously :)" % (userID)
 					api.update_status(comment, tweet.id)
 					print("---- [Tagged] ----")
+				if 'follow' in tweetText.lower():
+
+					print("---- [Followed] ----")
+
 				tweetCount += 1
 				print("[Number of tweets " + name + " has gone through: " + str(tweetCount) + ']\n')
 				time.sleep(100)
 				# api.create_friendship(tweet.user.id)
 		except tweepy.TweepError as e:
 			print('---- Error: '+ str(e[0][0]['message']) + ' ----\n')
-			break
 			continue
 		except StopIteration:
 			print("[I have stopped for some reason....]")
