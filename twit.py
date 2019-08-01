@@ -27,17 +27,25 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 
 	tweetCount = 0 # Count of how many tweets I've gone through so far
 	numOfTweets = 1000 # Maximum number of tweets we want to collect 
-	search = ("winner picked OR win free OR #rttowin OR #giveaway OR give away OR giveaway OR like and retweet OR like and rt OR retweet to enter OR retweet to win OR c OR rt to win OR chance to win OR giving away OR win free OR win a free OR chance to win -filter:retweets")
+	search = ("win a lifetime OR copy of OR winner picked OR win free OR #rttowin OR #giveaway OR give away OR giveaway OR likes and rts OR like and retweet OR like and rt OR retweet to enter OR retweet to win OR c OR rt to win OR chance to win OR giving away OR win free OR win a free OR chance to win -filter:retweets")
 	# search = ("tag")
 	# check for the search word 'win a lifetime copy'
 	
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
 		try:
-			if tweet.user.name == 'Bot Spotting' or 'bot' in tweet.user.name.lower(): #Avoiding a account called Bot Spotting that is used to catch bots
+			# Avoids a account called Bot Spotting that is used to catch bots
+			if tweet.user.name == 'Bot Spotting' or 'bot' in tweet.user.name.lower(): 
 				continue
+
+			# Keeps track of users that this script has gone through to check for specific accounts (sneaker bot related accounts)
 			print("[USERNAME: " + tweet.user.screen_name + "]")
+			with open('usersIWentThrough.csv', 'a') as data_file:
+						writer = csv.writer(data_file)
+						writer.writerow(tweet.user.screen_name)
+
+			# Checks tweets for what the user wants us to do in order to be eligible for the giveaway and executes certain action
 			tweetText = tweet.full_text
-			wackWords = ['comment', 'survey', 'fill out', 'reply', 'rsvp', 'enter here', 'click to', 'dm ']
+			wackWords = ['comment', 'survey', 'fill out', 'reply', 'rsvp', 'enter here', 'click to', 'dm '] # Words to ignore since these actions are too specific at the moment
 			if  all(word not in tweetText.lower() for word in wackWords):
 				print(tweetText.lower())
 				if 'like' in tweetText.lower():
@@ -59,11 +67,11 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 						if subtext.startswith('@'):
 							try:
 								person = subtext.strip('@').strip(',') 
-								personID = api.get_user(person).id #Retrieves user's ID so that Twitter can follow them
+								personID = api.get_user(person).id # Retrieves user's ID so that Twitter can follow them
 								api.create_friendship(personID)
 								print("---- [Followed: " + subtext + "] ----")
 							except:
-								print("---- [Couldn't follow: " + subtext + "] ----") #Catches errors when Twitter cannot find specified user to follow
+								print("---- [Couldn't follow: " + subtext + "] ----") # Catches errors when Twitter cannot find specified user to follow
 				tweetCount += 1
 				print("[Number of tweets " + name + " has gone through: " + str(tweetCount) + ']\n')
 				time.sleep(100)
@@ -103,7 +111,7 @@ if __name__ == '__main__':
 	p1.join()
 	p2.join()
 
-	playsound('drake.mp3')
+	# playsound('drake.mp3')
 
 
 
