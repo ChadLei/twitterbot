@@ -2,6 +2,7 @@ import tweepy
 import time
 from playsound import playsound
 from multiprocessing import Process
+import csv
 
 # Different keys and tokens for different accounts
 ChadLe14_consumer_key = 'sy1wATwFxDoetQFPFc1IMJuFh'
@@ -66,7 +67,7 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 					for subtext in textlist:
 						if subtext.startswith('@'):
 							try:
-								person = subtext.strip('@').strip(',') 
+								person = subtext.strip('@').strip(',').strip('\n').strip('!') 
 								personID = api.get_user(person).id # Retrieves user's ID so that Twitter can follow them
 								api.create_friendship(personID)
 								print("---- [Followed: " + subtext + "] ----")
