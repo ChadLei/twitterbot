@@ -77,9 +77,10 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 				print("[Number of tweets " + name + " has gone through: " + str(tweetCount) + ']\n')
 				time.sleep(100)
 			else:
-				print("---- [Skipped user - probably due to tweet not being relevant] ----")
+				print("---- [Skipped user - probably due to tweet not being relevant] ----\n")
 		except tweepy.TweepError as e:
-			print('---- Error: '+ str(e[0][0]['message']) + ' ----\n')
+			# print('---- Error: '+ str(e[0][0]['message']) + ' ----\n')
+			print('---- Error: '+ str(e) + ' ----\n')
 			continue
 		except StopIteration:
 			print("[I have stopped for some reason....]")
