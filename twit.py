@@ -28,9 +28,29 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 
 	tweetCount = 0 # Count of how many tweets I've gone through so far
 	numOfTweets = 1000 # Maximum number of tweets we want to collect 
-	search = ("win a lifetime OR copy of OR winner picked OR win free OR #rttowin OR #giveaway OR give away OR giveaway OR likes and rts OR like and retweet OR like and rt OR retweet to enter OR retweet to win OR c OR rt to win OR chance to win OR giving away OR win free OR win a free OR chance to win -filter:retweets")
-	# search = ("tag")
-	# check for the search word 'win a lifetime copy'
+	# search = ("#rttowin OR #giveaway OR (give away) OR giveaway OR (likes and rts) OR (like and retweet) OR (like and rt) OR (retweet to enter) OR (retweet to win) OR (rt to win) OR (chance to win) OR (giving away) OR (win free) OR (win a free) OR (chance to win) -filter:retweets")
+	search = ('''
+		((likes and rts) OR 
+		(like and retweet) OR 
+		(like and rt)) AND 
+
+		(a lifetime copy of) OR
+		(win a copy of) OR
+		(win a lifetime) OR 
+		(retweet to enter) OR 
+		(retweet to win) OR 
+		(rt to win) OR 
+		(chance to win) OR
+		(give away) OR 
+		(giveaway) OR 
+		(#giveaway) OR 
+		(giving away) OR
+		(#rttowin) OR 
+		(win free) OR 
+		(win a free)  
+		-filter:retweets''')
+		
+	# search = ("want a copy? OR win a lifetime copy OR retweet -filter:retweets")
 	
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
 		try:
@@ -42,11 +62,11 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 			print("[USERNAME: " + tweet.user.screen_name + "]")
 			with open('usersIWentThrough.csv', 'a') as data_file:
 						writer = csv.writer(data_file)
-						writer.writerow(tweet.user.screen_name)
-
+						writer.writerow([tweet.user.screen_name])
+			# break
 			# Checks tweets for what the user wants us to do in order to be eligible for the giveaway and executes certain action
 			tweetText = tweet.full_text
-			wackWords = ['comment', 'survey', 'fill out', 'reply', 'rsvp', 'enter here', 'click to', 'dm '] # Words to ignore since these actions are too specific at the moment
+			wackWords = ['survey', 'fill out', 'reply', 'rsvp', 'enter here', 'click to', 'dm '] # Words to ignore since these actions are too specific at the moment
 			if  all(word not in tweetText.lower() for word in wackWords):
 				print(tweetText.lower())
 				if 'like' in tweetText.lower():
@@ -55,14 +75,14 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 				if 'retweet' in tweetText.lower() or 'rt' in tweetText.lower():
 					tweet.retweet()
 					print("---- [Retweeted] ----")
-				if 'tag ' in tweetText.lower() or 'tell us' in tweetText.lower():
+				if 'tag ' in tweetText.lower() or 'tell us' in tweetText.lower() or 'comment' in tweetText.lower():
 					userID = tweet.user.screen_name
 					comment = "@%s @officialchidori @chazeechazy @ChadLe14 @chadeezy1 dude check that out lol!! the first one obviously :)" % (userID)
 					api.update_status(comment, tweet.id)
 					print("---- [Tagged] ----")
 				if 'follow' in tweetText.lower():
 					api.create_friendship(tweet.user.id)
-					print("---- [Followed: " + tweet.user.screen_name + "] ----")
+					print("---- [Followed: @" + tweet.user.screen_name + "] ----")
 					textlist = tweetText.lower().split(' ')
 					for subtext in textlist:
 						if subtext.startswith('@'):
@@ -75,7 +95,7 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 								print("---- [Couldn't follow: " + subtext + "] ----") # Catches errors when Twitter cannot find specified user to follow
 				tweetCount += 1
 				print("[Number of tweets " + name + " has gone through: " + str(tweetCount) + ']\n')
-				time.sleep(100)
+				time.sleep(90)
 			else:
 				print("---- [Skipped user - probably due to tweet not being relevant] ----\n")
 		except tweepy.TweepError as e:
@@ -89,7 +109,9 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 			print("[(tweetText.lower() couldn't convert tweet....]")
 			continue
 	# print(api.rate_limit_status()['resources']['search']) #You can check how many queries you have left using rate_limit_status() method
+	# print("[Number of tweets has gone through: " + str(tweetCount) + ']\n')
 	print("**************** Complete! ****************\n")
+ 
 
 
 
@@ -97,21 +119,21 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 
 
 
-
-
-
-
-
-if __name__ == '__main__':
-	# main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret)
-	# main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret)
-
+def startProcess():
 	p1 = Process(target=main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret))
 	p1.start()
 	p2 = Process(target=main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret))
 	p2.start()
 	p1.join()
 	p2.join()
+
+
+
+if __name__ == '__main__':
+	# main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret)
+	# main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret)
+	startProcess()
+	
 
 	# playsound('drake.mp3')
 
