@@ -49,26 +49,26 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 		(win free) OR 
 		(win a free)  
 		-filter:retweets''')
-		
-	# search = ("want a copy? OR win a lifetime copy OR retweet -filter:retweets")
-	
+
+	# Words to ignore since these actions are too specific at the moment
+	wackWords = ['instagram','facebook','cash','sign up','code','$','bounty reward','coin','give proof','show proof','stream','streamer','staxel','fortnite','twitch', 'survey', 'fill out', 'rsvp', 'enter here', 'click to', 'dm ', 'battle pass', 'battlepass', 'win nothing', 'help me', '#sugar'] 
+			
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
 		try:
 			# Avoids a account called Bot Spotting that is used to catch bots
 			if tweet.user.name == 'Bot Spotting' or 'bot' in tweet.user.name.lower(): 
 				continue
 
-			# Keeps track of users that this script has gone through to check for specific accounts (sneaker bot related accounts)
-			print("[USERNAME: " + tweet.user.screen_name + "]")
-			with open('usersIWentThrough.csv', 'a') as data_file:
-						writer = csv.writer(data_file)
-						writer.writerow([tweet.user.screen_name])
-			# break
-			# Checks tweets for what the user wants us to do in order to be eligible for the giveaway and executes certain action
+			# Checks tweets for what the user wants us to do in order to be eligible for the giveaway and executes certain actions
 			tweetText = tweet.full_text
-			# Words to ignore since these actions are too specific at the moment
-			wackWords = ['streamer','staxel','fortnite','twitch', 'survey', 'fill out', 'rsvp', 'enter here', 'click to', 'dm ', 'battle pass', 'battlepass', 'win nothing', 'help me', '#sugar'] 
 			if  all(word not in tweetText.lower() for word in wackWords):
+				# Keeps track of users that this script has gone through to check for specific accounts (sneaker bot related accounts)
+				print("[USERNAME: " + tweet.user.screen_name + "]")
+				with open('usersIWentThrough.csv', 'a') as data_file:
+					writer = csv.writer(data_file)
+					writer.writerow([tweet.user.screen_name])
+
+				# Checks criteria and acts accordingly
 				print(tweetText.lower())
 				if 'like' in tweetText.lower():
 					tweet.favorite()
@@ -91,7 +91,7 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 								person = subtext.strip('@').strip(',').strip('\n').strip('!') 
 								personID = api.get_user(person).id # Retrieves user's ID so that Twitter can follow them
 								api.create_friendship(personID)
-								print("---- [Followed: " + subtext + "] ----")
+								print("---- [Followed: @" + person + "] ----")
 							except:
 								print("---- [Couldn't follow: " + subtext + "] ----") # Catches errors when Twitter cannot find specified user to follow
 				tweetCount += 1
@@ -99,7 +99,7 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 				time.sleep(90)
 			else:
 				# print(tweetText.lower())
-				print("---- [Skipped user - probably due to tweet not being relevant] ----\n")
+				print("---- [Skipped user " + tweet.user.screen_name + " - probably due to tweet containing a wack word] ----\n")
 				# time.sleep(5)
 		except tweepy.TweepError as e:
 			# print('---- Error: '+ str(e[0][0]['message']) + ' ----\n')
