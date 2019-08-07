@@ -36,14 +36,15 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 	search = ('''
 		((likes and rts) OR 
 		(like and retweet) OR 
-		(like and rt)) AND 
+		(like and rt) OR 
+		(rt to #win) OR 
+		(rt to win)) AND 
 
 		(a lifetime copy of) OR
 		(win a copy of) OR
 		(win a lifetime) OR 
 		(retweet to enter) OR 
 		(retweet to win) OR 
-		(rt to win) OR 
 		(chance to win) OR
 		(give away) OR 
 		(giveaway) OR 
@@ -58,7 +59,8 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 	wackWords = ['pass royale','V-Bucks','follow whoever','retweet with the tag','ping account','Adoptme','answer the poll','instagram','facebook','cash',
 		'sign up','code','$','bounty reward','coin','give proof','show proof','stream','streamer','staxel','fortnite','twitch', 'survey', 'fill out', 'rsvp', 
 		'enter here','click to','dm ','battle pass','battlepass','win nothing','help me','#sugar','ikonik bundles','discount 30%','discount 50%','send me a picture',
-		'send me a', 'knight ranks'
+		'send me a', 'knight ranks', 'for me to win', 'help me win', 'click here', 'share any', 'comment this tweet with a picture', 'draw a', 'followers', 
+		'royale', ' original tweet', 'pinned tweet', 'yt channel', 'roblox', 'adoptme', 'IKONIK', 'original post'
 	] 
 			
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
