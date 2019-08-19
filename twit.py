@@ -60,7 +60,8 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 		'sign up','code','$','bounty reward','coin','give proof','show proof','stream','streamer','staxel','fortnite','twitch', 'survey', 'fill out', 'rsvp', 
 		'enter here','click to','dm ','battle pass','battlepass','win nothing','help me','#sugar','ikonik bundles','discount 30%','discount 50%','send me a picture',
 		'send me a', 'knight ranks', 'for me to win', 'help me win', 'click here', 'share any', 'comment this tweet with a picture', 'draw a', 'followers', 
-		'royale', ' original tweet', 'pinned tweet', 'yt channel', 'roblox', 'adoptme', 'IKONIK', 'original post'
+		'royale', ' original tweet', 'pinned tweet', 'yt channel', 'roblox', 'adoptme', 'ikonik', 'original post', 'Bloxburg', 'keys', 'rank', 'send proof',
+		'eon acc'
 	] 
 			
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
@@ -115,6 +116,8 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 		except tweepy.TweepError as e:
 			# print('---- Error: '+ str(e[0][0]['message']) + ' ----\n')
 			print('---- Error: '+ str(e) + ' ----\n')
+			if '429' in str(e):
+				time.sleep(4000)
 			continue
 		except StopIteration:
 			print("[I have stopped for some reason....]")
