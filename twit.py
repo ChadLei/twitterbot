@@ -56,12 +56,12 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 		-filter:retweets''')
 
 	# Words to ignore since these actions are too specific at the moment
-	wackWords = ['pass royale','V-Bucks','follow whoever','retweet with the tag','ping account','Adoptme','answer the poll','instagram','facebook','cash',
+	wackWords = ['pass royale','v-bucks','follow whoever','retweet with the tag','ping account','adoptme','answer the poll','instagram','facebook','cash',
 		'sign up','code','$','bounty reward','coin','give proof','show proof','stream','streamer','staxel','fortnite','twitch', 'survey', 'fill out', 'rsvp', 
-		'enter here','click to','dm ','battle pass','battlepass','win nothing','help me','#sugar','ikonik bundles','discount 30%','discount 50%','send me a picture',
+		'enter here','click to','dm ','battle pass','battlepass','win nothing','help me','#sugar','ikonik','discount 30%','discount 50%','send me a picture',
 		'send me a', 'knight ranks', 'for me to win', 'help me win', 'click here', 'share any', 'comment this tweet with a picture', 'draw a', 'followers', 
-		'royale', ' original tweet', 'pinned tweet', 'yt channel', 'roblox', 'adoptme', 'ikonik', 'original post', 'Bloxburg', 'keys', 'rank', 'send proof',
-		'eon acc'
+		'royale', ' original tweet', 'pinned tweet', 'yt channel', 'roblox', 'adoptme', 'original post', 'bloxburg', 'keys', 'rank', 'send proof',
+		'eon acc', 'vbucks', 'extra lives', 'fake giveaway', 'giving away nothing', 'iptv', 'x1'
 	] 
 			
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
@@ -98,7 +98,7 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 					print("---- [Followed: @" + tweet.user.screen_name + "] ----")
 					textlist = re.split('[,\s\n]',tweetText.lower())
 					for subtext in textlist:
-						if subtext.startswith('@'):
+						if subtext.startswith('@') and subtext != str(tweet.user.screen_name).lower():
 							try:
 								person = subtext.strip('@').strip(',').strip('\n').strip('!') 
 								personID = api.get_user(person).id # Retrieves user's ID so that Twitter can follow them
