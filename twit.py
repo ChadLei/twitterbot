@@ -8,15 +8,15 @@ from sys import argv
 
 
 # Different keys and tokens for different accounts
-ChadLe14_consumer_key = 'sy1wATwFxDoetQFPFc1IMJuFh'
-ChadLe14_consumer_secret = 'KjRrldyr03VN2iDKpMk905AYhZdBG8eHGV8dZDpPrQvTwZX28s'
-ChadLe14_access_token = '1153774025711030273-zdqneNw0Epe8Sl8Wge7CZl2jqYpvTH'
-ChadLe14_access_token_secret = 'x1Wdl35xJjzBUXpiSuWU7lPwGBz2k2LanCcmwlmp2rhqs'
+ChadLe14_consumer_key = 'x92Q3lssfzGK8SpXoJjgQdg5g'
+ChadLe14_consumer_secret = 'g4rQ7hEdYCSGiEHuCuiFkPSUuFTTC7J6epK6vn6KGTXyzbDnzV'
+ChadLe14_access_token = '1153774025711030273-tjy9UXnvVKHEm3BY6PC5poB3Ap701V'
+ChadLe14_access_token_secret = 'deLf8pgq5NKPlKEc33ReAhJiHgObTXjXnZW1Lc7bZLp5r'
 
-chadeezy1_consumer_key = 'PYi16RrC0RRhMiHafCGWMM7yo'
-chadeezy1_consumer_secret = 'PNweozp92bsbmeZ903EncMbvu9Mc8EyO8SSPbViLCT4vGo22Lx'
-chadeezy1_access_token = '1155186458468085760-UD0JsKKC7X215Zm0qcLUkJUzf2xZum'
-chadeezy1_access_token_secret = 'JXrdPHpP2c138BxvlhiKugRP23QLSYByZH1iPwqJ4ChUJ'
+chadeezy1_consumer_key = 'vRlpVD3M5BMIA32h3qfEu1xzW'
+chadeezy1_consumer_secret = 'rLJiH3qHj8areRQg9rTM1x6g4zcWswCmGx9nbIEORb3KKbIoZ2'
+chadeezy1_access_token = '1155186458468085760-WZFruAAqebWn532pfKhSqQfRKiOx68'
+chadeezy1_access_token_secret = 'LjkZYAvnUmvXNHtlem2te0MPxbNwssQ6GEn9UkfVEUHaV'
 
 # Searches Twitter for tweets relating to giveaways and fulfills requirements to win baby!
 def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
@@ -165,5 +165,5 @@ if __name__ == '__main__':
 	# playsound('drake.mp3')
 
 
-# python twit.py "ChadLe14" 'sy1wATwFxDoetQFPFc1IMJuFh' 'KjRrldyr03VN2iDKpMk905AYhZdBG8eHGV8dZDpPrQvTwZX28s' '1153774025711030273-zdqneNw0Epe8Sl8Wge7CZl2jqYpvTH' 'x1Wdl35xJjzBUXpiSuWU7lPwGBz2k2LanCcmwlmp2rhqs'
-# python twit.py "chadeezy1" 'PYi16RrC0RRhMiHafCGWMM7yo' 'PNweozp92bsbmeZ903EncMbvu9Mc8EyO8SSPbViLCT4vGo22Lx' '1155186458468085760-UD0JsKKC7X215Zm0qcLUkJUzf2xZum' 'JXrdPHpP2c138BxvlhiKugRP23QLSYByZH1iPwqJ4ChUJ'
+# python twit.py "ChadLe14" 'x92Q3lssfzGK8SpXoJjgQdg5g' 'g4rQ7hEdYCSGiEHuCuiFkPSUuFTTC7J6epK6vn6KGTXyzbDnzV' '1153774025711030273-tjy9UXnvVKHEm3BY6PC5poB3Ap701V' 'deLf8pgq5NKPlKEc33ReAhJiHgObTXjXnZW1Lc7bZLp5r'
+# python twit.py "chadeezy1" 'vRlpVD3M5BMIA32h3qfEu1xzW' 'rLJiH3qHj8areRQg9rTM1x6g4zcWswCmGx9nbIEORb3KKbIoZ2' '1155186458468085760-WZFruAAqebWn532pfKhSqQfRKiOx68' 'LjkZYAvnUmvXNHtlem2te0MPxbNwssQ6GEn9UkfVEUHaV'
