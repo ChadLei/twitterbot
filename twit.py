@@ -1,6 +1,6 @@
 import tweepy
 import time
-from playsound import playsound
+# from playsound import playsound
 from multiprocessing import Process
 import csv
 import re
@@ -8,15 +8,15 @@ from sys import argv
 
 
 # Different keys and tokens for different accounts
-ChadLe14_consumer_key = 'x92Q3lssfzGK8SpXoJjgQdg5g'
-ChadLe14_consumer_secret = 'g4rQ7hEdYCSGiEHuCuiFkPSUuFTTC7J6epK6vn6KGTXyzbDnzV'
-ChadLe14_access_token = '1153774025711030273-tjy9UXnvVKHEm3BY6PC5poB3Ap701V'
-ChadLe14_access_token_secret = 'deLf8pgq5NKPlKEc33ReAhJiHgObTXjXnZW1Lc7bZLp5r'
+# ChadLe14_consumer_key = 'x92Q3lssfzGK8SpXoJjgQdg5g'
+# ChadLe14_consumer_secret = 'g4rQ7hEdYCSGiEHuCuiFkPSUuFTTC7J6epK6vn6KGTXyzbDnzV'
+# ChadLe14_access_token = '1153774025711030273-tjy9UXnvVKHEm3BY6PC5poB3Ap701V'
+# ChadLe14_access_token_secret = 'deLf8pgq5NKPlKEc33ReAhJiHgObTXjXnZW1Lc7bZLp5r'
 
-chadeezy1_consumer_key = 'vRlpVD3M5BMIA32h3qfEu1xzW'
-chadeezy1_consumer_secret = 'rLJiH3qHj8areRQg9rTM1x6g4zcWswCmGx9nbIEORb3KKbIoZ2'
-chadeezy1_access_token = '1155186458468085760-WZFruAAqebWn532pfKhSqQfRKiOx68'
-chadeezy1_access_token_secret = 'LjkZYAvnUmvXNHtlem2te0MPxbNwssQ6GEn9UkfVEUHaV'
+# chadeezy1_consumer_key = 'vRlpVD3M5BMIA32h3qfEu1xzW'
+# chadeezy1_consumer_secret = 'rLJiH3qHj8areRQg9rTM1x6g4zcWswCmGx9nbIEORb3KKbIoZ2'
+# chadeezy1_access_token = '1155186458468085760-WZFruAAqebWn532pfKhSqQfRKiOx68'
+# chadeezy1_access_token_secret = 'LjkZYAvnUmvXNHtlem2te0MPxbNwssQ6GEn9UkfVEUHaV'
 
 # Searches Twitter for tweets relating to giveaways and fulfills requirements to win baby!
 def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
@@ -26,54 +26,59 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 	api = tweepy.API(auth, wait_on_rate_limit=True,wait_on_rate_limit_notify=True) #Creating a twitter API wrapper using tweepy
 
 	# Switch to application authentication - application-only authentication allows for 450 queries every 15 minutes
-	# auth = tweepy.AppAuthHandler(consumer_key, consumer_secret) 
+	# auth = tweepy.AppAuthHandler(consumer_key, consumer_secret)
 	# api = tweepy.API(auth, wait_on_rate_limit=True,wait_on_rate_limit_notify=True) #Setting up new api wrapper, using authentication only
 
 	tweetCount = 0 # Count of how many tweets I've gone through so far
-	numOfTweets = 3000 # Maximum number of tweets we want to collect 
+	numOfTweets = 3000 # Maximum number of tweets we want to collect
 	numberOfTotalTweetsGoneThru = 0
 	# search = ("#rttowin OR #giveaway OR (give away) OR giveaway OR (likes and rts) OR (like and retweet) OR (like and rt) OR (retweet to enter) OR (retweet to win) OR (rt to win) OR (chance to win) OR (giving away) OR (win free) OR (win a free) OR (chance to win) -filter:retweets")
 	search = ('''
-		((likes and rts) OR 
-		(like and retweet) OR 
-		(like and rt) OR 
-		(rt to #win) OR 
-		(rt to win)) AND 
+		((likes and rts) OR
+		(like and retweet) OR
+		(like and rt) OR
+		(rt to #win) OR
+		(rt to win)) AND
 
 		(a lifetime copy of) OR
 		(win a copy of) OR
-		(win a lifetime) OR 
-		(retweet to enter) OR 
-		(retweet to win) OR 
+		(win a lifetime) OR
+		(retweet to enter) OR
+		(retweet to win) OR
 		(chance to win) OR
-		(give away) OR 
-		(giveaway) OR 
-		(#giveaway) OR 
+		(give away) OR
+		(giveaway) OR
+		(#giveaway) OR
 		(giving away) OR
-		(#rttowin) OR 
-		(win free) OR 
-		(win a free)  
+		(#rttowin) OR
+		(win free) OR
+		(win a free)
 		-filter:retweets''')
 
 	# Words to ignore since these actions are too specific at the moment
 	wackWords = ['pass royale','v-bucks','follow whoever','retweet with the tag','ping account','adoptme','answer the poll','instagram','facebook','cash',
-		'sign up','code','$','bounty reward','coin','give proof','show proof','stream','streamer','staxel','fortnite','twitch', 'survey', 'fill out', 'rsvp', 
+		'sign up','code','$','bounty reward','coin','give proof','show proof','stream','streamer','staxel','fortnite','twitch', 'survey', 'fill out', 'rsvp',
 		'enter here','click to','dm ','battle pass','battlepass','win nothing','help me','#sugar','ikonik','discount 30%','discount 50%','send me a picture',
-		'send me a', 'knight ranks', 'for me to win', 'help me win', 'click here', 'share any', 'comment this tweet with a picture', 'draw a', 'followers', 
+		'send me a', 'knight ranks', 'for me to win', 'help me win', 'click here', 'share any', 'comment this tweet with a picture', 'draw a', 'followers',
 		'royale', ' original tweet', 'pinned tweet', 'yt channel', 'roblox', 'adoptme', 'original post', 'bloxburg', 'keys', 'rank', 'send proof',
-		'eon acc', 'vbucks', 'extra lives', 'fake giveaway', 'giving away nothing', 'iptv', 'x1'
-	] 
-			
+		'eon acc', 'vbucks', 'extra lives', 'fake giveaway', 'giving away nothing', 'iptv', 'x1', 'xrp', 'v bucks', 'robux', 'v-buck', 'peso'
+	]
+
+	# try:
+	# 	api.update_status(status='Test')
+	# except tweepy.TweepError as e:
+	# 	print(e)
+	# 	raise
 	for tweet in tweepy.Cursor(api.search, search, count=100, tweet_mode='extended').items(numOfTweets):
 		numberOfTotalTweetsGoneThru += 1
 		try:
 			# Avoids a account called Bot Spotting that is used to catch bots
-			if tweet.user.name == 'Bot Spotting' or 'bot' in tweet.user.name.lower(): 
+			if tweet.user.name == 'Bot Spotting' or 'bot' in tweet.user.name.lower():
 				continue
 
 			# Checks tweets for what the user wants us to do in order to be eligible for the giveaway and executes certain actions
 			tweetText = tweet.full_text
-			if  all(word not in tweetText.lower() for word in wackWords):
+			if all(word not in tweetText.lower() for word in wackWords) and len(tweetText) > 80:
 				# Keeps track of users that this script has gone through to check for specific accounts (sneaker bot related accounts)
 				print("[USERNAME: " + tweet.user.screen_name + "]")
 				# with open('usersIWentThrough.csv', 'a') as data_file:
@@ -100,7 +105,7 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 					for subtext in textlist:
 						if subtext.startswith('@') and subtext != str(tweet.user.screen_name).lower():
 							try:
-								person = subtext.strip('@').strip(',').strip('\n').strip('!') 
+								person = subtext.strip('@').strip(',').strip('\n').strip('!')
 								personID = api.get_user(person).id # Retrieves user's ID so that Twitter can follow them
 								api.create_friendship(personID)
 								print("---- [Followed: @" + person + "] ----")
@@ -108,16 +113,20 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 								print("---- [Couldn't follow: " + subtext + "] ----") # Catches errors when Twitter cannot find specified user to follow
 				tweetCount += 1
 				print("[Number of tweets " + name + " has gone through: " + str(tweetCount) + ']\n')
-				time.sleep(100)
+				if tweetCount >= 1:
+					break
+				else:
+					time.sleep(600)
 			else:
 				# print(tweetText.lower())
 				print("---- [Skipped user " + tweet.user.screen_name + " - probably due to tweet containing a wack word] ----\n")
-				# time.sleep(5)
+				time.sleep(10)
 		except tweepy.TweepError as e:
 			# print('---- Error: '+ str(e[0][0]['message']) + ' ----\n')
+			print('SHIT')
 			print('---- Error: '+ str(e) + ' ----\n')
 			if '429' in str(e):
-				time.sleep(4000)
+				time.sleep(5000)
 			continue
 		except StopIteration:
 			print("[I have stopped for some reason....]")
@@ -131,7 +140,6 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 	print("[Number of tweets liked/retweeted/followed: " + str(tweetCount) + ']\n')
 	print("**************** Total number of tweets gone thru: " + str(numberOfTotalTweetsGoneThru) + ' ****************\n')
 
- 
 
 
 
@@ -156,14 +164,18 @@ if __name__ == '__main__':
 	consumer_secret = argv[3]
 	access_token = argv[4]
 	access_token_secret = argv[5]
-	main(name,consumer_key,consumer_secret,access_token,access_token_secret)
+
+ 	while(True):
+		main(name,consumer_key,consumer_secret,access_token,access_token_secret)
+		print("Went through 100 tweets... taking a 4 hour break now")
+		time.sleep(14400)
 	# main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret)
 	# main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret)
 	# startProcess()
-	
+
 
 	# playsound('drake.mp3')
 
 
-# python twit.py "ChadLe14" 'x92Q3lssfzGK8SpXoJjgQdg5g' 'g4rQ7hEdYCSGiEHuCuiFkPSUuFTTC7J6epK6vn6KGTXyzbDnzV' '1153774025711030273-tjy9UXnvVKHEm3BY6PC5poB3Ap701V' 'deLf8pgq5NKPlKEc33ReAhJiHgObTXjXnZW1Lc7bZLp5r'
-# python twit.py "chadeezy1" 'vRlpVD3M5BMIA32h3qfEu1xzW' 'rLJiH3qHj8areRQg9rTM1x6g4zcWswCmGx9nbIEORb3KKbIoZ2' '1155186458468085760-WZFruAAqebWn532pfKhSqQfRKiOx68' 'LjkZYAvnUmvXNHtlem2te0MPxbNwssQ6GEn9UkfVEUHaV'
+# python twit.py "ChadLe14" "mrNI7eAGAyRgTUlt8NsdJr0tc" "kfiJlRvr3D4J0Xl4APVlGTdIInXR7hmWGpFVib18CfcgNlraYK" "1153774025711030273-nIr1STr1Edj7u2iD0xtzLqwGbRy9d7" "E7OhcDmrrUyllH6qcASdlzEx0Sk9f0CysI4oyqOgYLkzj"
+# python twit.py "chadeezy1" "yMXF3P59rD4F5gqrgjlzKnpLF" "bZxQhFy71tEN7BN0zHIIYJDZXZVjmuNayE5Ek9vUTzAdlpgQwv" "1155186458468085760-COw4d1l9KOSw7ycjV482XCv9G9AlY5" "6n6bHYxkL9VRw8375oROS1l7lmdoYHQgRBJT6P0F2AFpk"
