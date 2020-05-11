@@ -169,13 +169,8 @@ if __name__ == '__main__':
 		main(name,consumer_key,consumer_secret,access_token,access_token_secret)
 		print("Went through 100 tweets... taking a 4 hour break now")
 		time.sleep(14400)
-	# main("ChadLe14",ChadLe14_consumer_key,ChadLe14_consumer_secret,ChadLe14_access_token,ChadLe14_access_token_secret)
-	# main("chadeezy1",chadeezy1_consumer_key,chadeezy1_consumer_secret,chadeezy1_access_token,chadeezy1_access_token_secret)
-	# startProcess()
-
+	
 
 	# playsound('drake.mp3')
 
 
-# python twit.py "ChadLe14" "mrNI7eAGAyRgTUlt8NsdJr0tc" "kfiJlRvr3D4J0Xl4APVlGTdIInXR7hmWGpFVib18CfcgNlraYK" "1153774025711030273-nIr1STr1Edj7u2iD0xtzLqwGbRy9d7" "E7OhcDmrrUyllH6qcASdlzEx0Sk9f0CysI4oyqOgYLkzj"
-# python twit.py "chadeezy1" "yMXF3P59rD4F5gqrgjlzKnpLF" "bZxQhFy71tEN7BN0zHIIYJDZXZVjmuNayE5Ek9vUTzAdlpgQwv" "1155186458468085760-COw4d1l9KOSw7ycjV482XCv9G9AlY5" "6n6bHYxkL9VRw8375oROS1l7lmdoYHQgRBJT6P0F2AFpk"
