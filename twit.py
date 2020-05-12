@@ -113,7 +113,8 @@ def main(name,consumer_key,consumer_secret,access_token,access_token_secret):
 								print("---- [Couldn't follow: " + subtext + "] ----") # Catches errors when Twitter cannot find specified user to follow
 				tweetCount += 1
 				print("[Number of tweets " + name + " has gone through: " + str(tweetCount) + ']\n')
-				if tweetCount >= 1:
+				# Takes a 4 hour break everytime we finish 100 tweets
+				if tweetCount >= 100:
 					break
 				else:
 					time.sleep(600)
@@ -169,8 +170,3 @@ if __name__ == '__main__':
 		main(name,consumer_key,consumer_secret,access_token,access_token_secret)
 		print("Went through 100 tweets... taking a 4 hour break now")
 		time.sleep(14400)
-	
-
-	# playsound('drake.mp3')
-
-
